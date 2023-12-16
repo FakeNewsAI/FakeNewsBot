@@ -12,4 +12,4 @@ COPY requirements.txt /app
 
 RUN pip install -r requirements.txt
 
-ENTRYPOINT ["python", "main.py"]
+CMD ["python", "main.py"]
