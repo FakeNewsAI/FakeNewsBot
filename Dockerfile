@@ -1,6 +1,6 @@
 FROM python:3.10-alpine as base
 
-RUN apk add gcc g++ cmake make libffi-dev openssl-dev
+RUN apk add gcc cmake
 
 RUN pip install --upgrade pip
 
