@@ -74,7 +74,7 @@ async def ask(update: Update, context: ContextTypes.DEFAULT_TYPE):
 # Define a function to handle the button click
 async def report_incorrect(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
-    await query.answer("Thank you for reporting ✅")
+    await query.answer("We'll try to improve next time 🙏")
 
     # Get the original message that triggered the inline keyboard
     original_message = query.message
