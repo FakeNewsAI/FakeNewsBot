@@ -6,6 +6,6 @@ COPY . /app
 
 WORKDIR /app
 
-RUN pip install -r requirements.txt
+RUN pip install "langchain[llms]" "google-api-python-client>=2.100.0" python-dotenv python-telegram-bot langchain-google-genai pillow
 
 ENTRYPOINT ["python", "main.py"]
