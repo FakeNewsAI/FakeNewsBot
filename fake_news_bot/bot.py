@@ -50,10 +50,14 @@ async def ask(update, context):
     for query in (response["intermediate_steps"]):
       if len(query) > 1:
         for result in query[1]:
-          if result:
-            title = str(result['title'])
-            if title:
-              results[title] = f"*[{filter_special_characters(title)}]({filter_special_characters(result['link'])})*"
+          try:
+            if result:
+              title = str(result['title'])
+              if title:
+                results[title] = f"*[{filter_special_characters(title)}]({filter_special_characters(result['link'])})*"
+          except Exception as e:
+            print(e, "\n",result)
+            continue
     if len(results.keys()) > 0:
       await context.bot.send_message(chat_id=update.effective_chat.id, text="_*Sources:*_\n"+"\n\n".join(results.values()), disable_web_page_preview=True, parse_mode="MarkdownV2")
     # except Exception as e:
