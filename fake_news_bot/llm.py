@@ -27,10 +27,10 @@ prompt = PromptTemplate(template=template, input_variables=["prompt"])
 # Callbacks support token-wise streaming
 callback_manager = CallbackManager([StreamingStdOutCallbackHandler()])
 
-llm = ChatGoogleGenerativeAI(model="gemini-pro")
+llm = ChatGoogleGenerativeAI(model="gemini-pro", google_api_key=os.environ.get("GEMINI_KEY"))
 
 
-search = GoogleSearchAPIWrapper()
+search = GoogleSearchAPIWrapper(google_api_key=os.environ.get("GOOGLE_SEARCH_KEY"))
 
 
 def top5_results(query):
