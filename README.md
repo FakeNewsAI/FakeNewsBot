@@ -20,22 +20,14 @@
 
 1. Install Docker
 2. Set the environment variables specified below. We have provided a `.env.example` file for you to fill in. Rename it to `.env` after filling in the values.
-3. Get the image with 
+3. Run the image with 
    ```shell
-   docker pull ghcr.io/FakeNewsAI/FakeNewsBot:latest
+   docker run --env-file .env ghcr.io/fakenewsai/fakenewsbot:latest
    ```
-4. Run the image with 
+4. Start using the telegram bot.
+5. Update the FakeNewsBot image with
    ```shell
-   docker run -d --name fakenewsbot --env-file .env ghcr.io/FakeNewsAI/FakeNewsBot:latest
-   ```
-5. Start using the telegram bot.
-6. Stop the container with 
-   ```shell
-   docker stop fakenewsbot
-   ```
-7. Update the FakeNewsBot image with
-   ```shell
-   docker pull ghcr.io/FakeNewsAI/FakeNewsBot:latest
+   docker pull ghcr.io/fakenewsai/fakenewsbot:latest
    ```
 
 ## Environment variables
