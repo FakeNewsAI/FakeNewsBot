@@ -45,7 +45,7 @@ async def ask(update: Update, context: ContextTypes.DEFAULT_TYPE):
                               text="Sorry, we couldn't process the information. Looks like we have an error. Please try again with a different question.")
       # Delete cache from langchain 
       llm_cache.delete_by_prompt(question)
-    else: 
+    else:
       await context.bot.edit_message_text(chat_id=update.effective_chat.id,
                                 message_id=init_message.message_id,
                                 text=response['output'],
