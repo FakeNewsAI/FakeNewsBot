@@ -16,6 +16,28 @@
 5. Run the bot with `python3 main.py`
 6. Start using the telegram bot.
 
+### Docker (recommended)
+
+1. Install Docker
+2. Set the environment variables specified below. We have provided a `.env.example` file for you to fill in. Rename it to `.env` after filling in the values.
+3. Get the image with 
+   ```shell
+   docker pull ghcr.io/FakeNewsAI/FakeNewsBot:latest
+   ```
+4. Run the image with 
+   ```shell
+   docker run -d --name fakenewsbot --env-file .env ghcr.io/FakeNewsAI/FakeNewsBot:latest
+   ```
+5. Start using the telegram bot.
+6. Stop the container with 
+   ```shell
+   docker stop fakenewsbot
+   ```
+7. Update the FakeNewsBot image with
+   ```shell
+   docker pull ghcr.io/FakeNewsAI/FakeNewsBot:latest
+   ```
+
 ## Environment variables
 
 `.env.example` contains the environment variables that need to be set. Rename it to `.env` after filling in the values.
