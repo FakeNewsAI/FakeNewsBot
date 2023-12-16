@@ -40,9 +40,15 @@ async def ask(update, context):
 
     # Send the response to the user
     # update.message.reply_text(response['output'])
-    await context.bot.edit_message_text(chat_id=update.effective_chat.id,
+    if "Agent stopped due to" in response['output'] or response['output'] == "":
+      await context.bot.edit_message_text(chat_id=update.effective_chat.id,
                               message_id=init_message.message_id,
-                              text=response['output'],
+                              text="Sorry, we couldn't process the information. Looks like we have an error. Please try again with a different question.")
+      # Delete cache from langchain 
+    else: 
+      await context.bot.edit_message_text(chat_id=update.effective_chat.id,
+                                message_id=init_message.message_id,
+                                text=response['output'],
                               reply_markup=reply_markup)
 
     # Get the sources from the zero-shot agent
