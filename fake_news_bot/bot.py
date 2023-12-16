@@ -1,9 +1,8 @@
 import os
+import re
 from .llm import ask_llm
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, CallbackQueryHandler
-import asyncio
-import re
 from dotenv import load_dotenv
 
 load_dotenv()

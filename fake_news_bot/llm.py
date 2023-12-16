@@ -1,10 +1,7 @@
 import os
-from langchain.llms import LlamaCpp
 from langchain.prompts import PromptTemplate
-from langchain.chains import LLMChain
 from langchain.callbacks.manager import CallbackManager
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
-from langchain.agents import load_tools
 from langchain.agents import initialize_agent, AgentType
 from langchain.tools import Tool
 from langchain.utilities import GoogleSearchAPIWrapper
@@ -27,7 +24,9 @@ prompt = PromptTemplate(template=template, input_variables=["prompt"])
 # Callbacks support token-wise streaming
 callback_manager = CallbackManager([StreamingStdOutCallbackHandler()])
 
-llm = ChatGoogleGenerativeAI(model="gemini-pro", google_api_key=os.environ.get("GEMINI_KEY"))
+llm = ChatGoogleGenerativeAI(
+    model="gemini-pro", google_api_key=os.environ.get("GEMINI_KEY")
+)
 
 
 search = GoogleSearchAPIWrapper(google_api_key=os.environ.get("GOOGLE_SEARCH_KEY"))
