@@ -1,10 +1,9 @@
 import os
 import re
-from .llm import ask_llm
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext import Application, CommandHandler, MessageHandler, filters, CallbackQueryHandler
+from .llm import ask_llm, llm_cache
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
+from telegram.ext import Application, ContextTypes, CommandHandler, MessageHandler, filters, CallbackQueryHandler
 from dotenv import load_dotenv
-
 load_dotenv()
 
 
@@ -18,12 +17,12 @@ def filter_special_characters(text):
     return filtered_text
 
 # Command handler for the /start command
-async def start(update, context):
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(chat_id=update.effective_chat.id, text="Welcome to the FakeNewsAI Bot!")
 
 # Command handler for the /ask command
-async def ask(update, context):
-    init_message = await context.bot.send_message(chat_id=update.effective_chat.id, text="We're analyzing your message for authenticity. It'll take a moment as we verify the credibility of the news.")
+async def ask(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    init_message = await update.message.reply_text(text="We're analyzing your message for authenticity. It'll take a moment as we verify the credibility of the news.", reply_to_message_id=update.message.message_id)
     # try:
       # Call the ask_llm function and get the response
     question = None
@@ -45,6 +44,7 @@ async def ask(update, context):
                               message_id=init_message.message_id,
                               text="Sorry, we couldn't process the information. Looks like we have an error. Please try again with a different question.")
       # Delete cache from langchain 
+      llm_cache.delete_by_prompt(question)
     else: 
       await context.bot.edit_message_text(chat_id=update.effective_chat.id,
                                 message_id=init_message.message_id,
@@ -72,7 +72,7 @@ async def ask(update, context):
     #                             message_id=init_message.message_id, text="Error Occured: "+str(e))
 
 # Define a function to handle the button click
-async def report_incorrect(update, context):
+async def report_incorrect(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer("Thank you for reporting ✅")
 
@@ -85,8 +85,24 @@ async def report_incorrect(update, context):
         message_id=original_message.message_id,
         reply_markup=InlineKeyboardMarkup([])  # Pass an empty InlineKeyboardMarkup to remove the keyboard
     )
+    
+    # Delete cache from langchain
+    # find parent message reply
+    parent_message = original_message.reply_to_message
+    if parent_message:
+      # find the question
+      question = None
+      if parent_message.text:
+        question = parent_message.text
+      elif parent_message.caption:
+        question = parent_message.caption
+      else:
+        raise ValueError("No question was found from the message to delete cache response.")
+      # delete from cache
+      print("Response was marked incorrect, deleting cache response for question:", question)
+      llm_cache.delete_by_prompt(question)
 
-async def report_correct(update, context):
+async def report_correct(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer("Thank you for the feedback ✅")
 

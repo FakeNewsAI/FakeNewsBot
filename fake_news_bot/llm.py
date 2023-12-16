@@ -5,12 +5,13 @@ from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 from langchain.agents import initialize_agent, AgentType
 from langchain.tools import Tool
 from langchain.utilities import GoogleSearchAPIWrapper
-from langchain.cache import SQLiteCache
+from .db import MySQLCache as SQLiteCache
 from langchain.globals import set_llm_cache
 from langchain_google_genai import ChatGoogleGenerativeAI
 from dotenv import load_dotenv
 
-set_llm_cache(SQLiteCache(database_path=".langchain.db"))
+llm_cache = SQLiteCache(database_path=".langchain.db")
+set_llm_cache(llm_cache)
 load_dotenv()
 
 template = """Act like fake news identifier who identifies whether the given news is true or false based on internet results or contexts given to you. Simply output whether the given news is True or False based on the given knowledge, do not output anything else. If the the event is old, explicitly mention it happended in the past. If you do not find any relevent sources, specify and classify the news as false.
