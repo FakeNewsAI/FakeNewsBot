@@ -26,7 +26,8 @@ prompt = PromptTemplate(template=template, input_variables=["prompt"])
 callback_manager = CallbackManager([StreamingStdOutCallbackHandler()])
 
 llm = ChatGoogleGenerativeAI(
-    model="gemini-pro", google_api_key=os.environ.get("GEMINI_KEY")
+    model="gemini-pro", google_api_key=os.environ.get("GEMINI_KEY"),
+    temperature=0.01
 )
 
 
@@ -53,7 +54,7 @@ agent_decider = initialize_agent(
     handle_parsing_errors=True,
     max_tokens_limit=2048,
     return_intermediate_steps=True,
-    max_iterations=10,
+    max_iterations=15,
 )
 
 
