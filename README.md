@@ -1,5 +1,3 @@
-# FakeNewsBot
-
 <div align="center">
 
   # FakeNewsBot
