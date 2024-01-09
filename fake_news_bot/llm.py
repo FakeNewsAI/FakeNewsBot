@@ -1,14 +1,16 @@
 import os
+from dotenv import load_dotenv
+
 from langchain.prompts import PromptTemplate
 from langchain.callbacks.manager import CallbackManager
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 from langchain.agents import initialize_agent, AgentType
 from langchain.tools import Tool
 from langchain.utilities import GoogleSearchAPIWrapper
-from .db import MySQLCache as SQLiteCache
 from langchain.globals import set_llm_cache
 from langchain_google_genai import ChatGoogleGenerativeAI
-from dotenv import load_dotenv
+
+from fake_news_bot.db import MySQLCache as SQLiteCache
 
 llm_cache = SQLiteCache(database_path=".langchain.db")
 set_llm_cache(llm_cache)
