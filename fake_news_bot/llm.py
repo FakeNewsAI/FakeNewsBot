@@ -8,7 +8,9 @@ from langchain.agents import initialize_agent, AgentType
 from langchain.tools import Tool
 from langchain.utilities import GoogleSearchAPIWrapper
 from langchain.globals import set_llm_cache
-from langchain_google_genai import ChatGoogleGenerativeAI
+
+
+from fake_news_bot.chat_model import ChatGoogleGenerativeAI
 
 from fake_news_bot.db import MySQLCache as SQLiteCache
 
@@ -16,19 +18,23 @@ llm_cache = SQLiteCache(database_path=".langchain.db")
 set_llm_cache(llm_cache)
 load_dotenv()
 
-template = """Act like fake news identifier who identifies whether the given news is true or false based on internet results or contexts given to you. Simply output whether the given news is True or False based on the given knowledge, do not output anything else. If the the event is old, explicitly mention it happended in the past. If you do not find any relevent sources, specify and classify the news as false.
+# system_message = "Act like fake news identifier who identifies whether the given news is true or false based on internet results or contexts given to you. Simply output whether the given news is True or False based on the given knowledge, do not output anything else. If the the event is old, explicitly mention it happended in the past. If you do not find any relevent sources, specify and classify the news as false."
+system_message = "Identify the credibility of the given news below based on google search results."
+
+template = """{system_message}
 
 News: {prompt}
 """
 
-prompt = PromptTemplate(template=template, input_variables=["prompt"])
+prompt = PromptTemplate(template=template, input_variables=["system_message","prompt"])
 
 
 # Callbacks support token-wise streaming
 callback_manager = CallbackManager([StreamingStdOutCallbackHandler()])
 
 llm = ChatGoogleGenerativeAI(
-    model="gemini-pro", google_api_key=os.environ.get("GEMINI_KEY"),
+    model="gemini-pro",
+    google_api_key=os.environ.get("GEMINI_KEY"),
     temperature=0.01
 )
 
@@ -61,4 +67,4 @@ agent_decider = initialize_agent(
 
 
 def ask_llm(prompt: str):
-    return agent_decider({"input": prompt.format(prompt=prompt)})
+    return agent_decider({"input": prompt.format(system_message=system_message,prompt=prompt)})
