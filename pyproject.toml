@@ -1,0 +1,29 @@
+[tool.poetry]
+name = "fake-news-bot"
+version = "0.1.0"
+description = "A fake news telegram bot using LLM to bust fake news."
+authors = ["Mohammed Rabil <mail@rabil.me>"]
+license = "GPLv3"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+python-dotenv = "^1.0.0"
+cachetools = "5.3.2"
+google-ai-generativelanguage = "0.4.0"
+google-api-python-client = "2.111.0"
+langchain = "0.0.350"
+langchain-community = "0.0.3"
+langchain-core = "0.1.1"
+langchain-google-genai = "0.0.4"
+langsmith = "0.0.71"
+pillow = "10.1.0"
+python-telegram-bot = "20.7"
+requests = "2.31.0"
+
+[tool.poetry.scripts]
+fake-news-bot = "fake_news_bot.bot:main"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
